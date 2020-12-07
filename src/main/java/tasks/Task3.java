@@ -19,8 +19,8 @@ public class Task3 implements Task {
     // !!! Редактируйте этот метод !!!
     private List<Person> sort(Collection<Person> persons) {
         return persons.stream()
-                .sorted(comparing(Person::getFirstName)
-                        .thenComparing(Person::getSecondName)
+                .sorted(comparing(Person::getSecondName)
+                        .thenComparing(Person::getFirstName)
                         .thenComparing(Person::getCreatedAt))
                 .collect(toList());
 

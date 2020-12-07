@@ -4,11 +4,13 @@ import common.Person;
 import common.Task;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
-import static java.util.Comparator.*;
-import static java.util.stream.Collectors.*;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
 
 /*
 Задача 2

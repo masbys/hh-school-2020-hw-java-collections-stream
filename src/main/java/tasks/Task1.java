@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class Task1 implements Task {
 
     // !!! Редактируйте этот метод !!!
+    //O(n)
     private List<Person> findOrderedPersons(List<Integer> personIds) {
         Set<Person> persons = PersonService.findPersons(personIds);
         Map<Integer, Person> personMap = new HashMap<>();

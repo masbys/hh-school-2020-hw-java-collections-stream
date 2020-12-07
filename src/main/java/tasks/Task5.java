@@ -2,11 +2,13 @@ package tasks;
 
 import common.ApiPersonDto;
 import common.Person;
-import common.PersonService;
 import common.Task;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /*
 Задача 5
@@ -17,36 +19,36 @@ import java.util.*;
  */
 public class Task5 implements Task {
 
-  // !!! Редактируйте этот метод !!!
-  private List<ApiPersonDto> convert(List<Person> persons, Map<Integer, Integer> personAreaIds) {
+    // !!! Редактируйте этот метод !!!
+    private List<ApiPersonDto> convert(List<Person> persons, Map<Integer, Integer> personAreaIds) {
 
-    Map<Integer, Person> personMap = new HashMap<>();
-    for (Person p : persons) {
-      personMap.put(p.getId(), p);
+        Map<Integer, Person> personMap = new HashMap<>();
+        for (Person p : persons) {
+            personMap.put(p.getId(), p);
+        }
+
+        List<ApiPersonDto> personList = new ArrayList<>();
+        for (Integer id : personMap.keySet()) {
+            personList.add(convert(personMap.get(id), personAreaIds.get(id)));
+        }
+        return personList;
     }
 
-    List<ApiPersonDto> personList = new ArrayList<>();
-    for(Integer id : personMap.keySet()){
-      personList.add(convert(personMap.get(id), personAreaIds.get(id)));
+    private static ApiPersonDto convert(Person person, Integer areaId) {
+        ApiPersonDto dto = new ApiPersonDto();
+        dto.setCreated(person.getCreatedAt().toEpochMilli());
+        dto.setId(person.getId().toString());
+        dto.setName(person.getFirstName());
+        dto.setAreaId(areaId);
+        return dto;
     }
-    return personList;
-  }
 
-  private static ApiPersonDto convert(Person person, Integer areaId) {
-    ApiPersonDto dto = new ApiPersonDto();
-    dto.setCreated(person.getCreatedAt().toEpochMilli());
-    dto.setId(person.getId().toString());
-    dto.setName(person.getFirstName());
-    dto.setAreaId(areaId);
-    return dto;
-  }
-
-  @Override
-  public boolean check() {
-    Person person1 = new Person(1, "Name", Instant.now());
-    Person person2 = new Person(2, "Name", Instant.now());
-    Map<Integer, Integer> personAreaIds = Map.of(1, 1, 2, 2);
-    return List.of(convert(person1, 1), convert(person2, 2))
-        .equals(convert(List.of(person1, person2), personAreaIds));
-  }
+    @Override
+    public boolean check() {
+        Person person1 = new Person(1, "Name", Instant.now());
+        Person person2 = new Person(2, "Name", Instant.now());
+        Map<Integer, Integer> personAreaIds = Map.of(1, 1, 2, 2);
+        return List.of(convert(person1, 1), convert(person2, 2))
+                .equals(convert(List.of(person1, person2), personAreaIds));
+    }
 }
