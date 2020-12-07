@@ -29,10 +29,9 @@ public class Task1 implements Task {
         Set<Person> persons = PersonService.findPersons(personIds);
         Map<Integer, Person> personMap = persons.stream()
                 .collect(toMap(Person::getId, identity()));
-        List<Person> personList = personIds.stream()
+        return personIds.stream()
                 .map(personMap::get)
                 .collect(toList());
-        return personList;
     }
 
 
