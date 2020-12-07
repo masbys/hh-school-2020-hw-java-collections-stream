@@ -4,8 +4,15 @@ import common.Person;
 import common.PersonService;
 import common.Task;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toMap;
 
 /*
 Задача 1
@@ -20,14 +27,11 @@ public class Task1 implements Task {
     //O(n)
     private List<Person> findOrderedPersons(List<Integer> personIds) {
         Set<Person> persons = PersonService.findPersons(personIds);
-        Map<Integer, Person> personMap = new HashMap<>();
-        for (Person p : persons) {
-            personMap.put(p.getId(), p);
-        }
-        List<Person> personList = new ArrayList<>();
-        for (Integer id : personIds) {
-            personList.add(personMap.get(id));
-        }
+        Map<Integer, Person> personMap = persons.stream()
+                .collect(toMap(Person::getId, identity()));
+        List<Person> personList = personIds.stream()
+                .map(personMap::get)
+                .collect(toList());
         return personList;
     }
 
@@ -38,7 +42,7 @@ public class Task1 implements Task {
 
         return findOrderedPersons(ids).stream()
                 .map(Person::getId)
-                .collect(Collectors.toList())
+                .collect(toList())
                 .equals(ids);
     }
 
