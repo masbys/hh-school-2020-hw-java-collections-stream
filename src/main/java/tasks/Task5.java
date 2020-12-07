@@ -2,12 +2,11 @@ package tasks;
 
 import common.ApiPersonDto;
 import common.Person;
+import common.PersonService;
 import common.Task;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /*
 Задача 5
@@ -20,7 +19,17 @@ public class Task5 implements Task {
 
   // !!! Редактируйте этот метод !!!
   private List<ApiPersonDto> convert(List<Person> persons, Map<Integer, Integer> personAreaIds) {
-    return new ArrayList<>();
+
+    Map<Integer, Person> personMap = new HashMap<>();
+    for (Person p : persons) {
+      personMap.put(p.getId(), p);
+    }
+
+    List<ApiPersonDto> personList = new ArrayList<>();
+    for(Integer id : personMap.keySet()){
+      personList.add(convert(personMap.get(id), personAreaIds.get(id)));
+    }
+    return personList;
   }
 
   private static ApiPersonDto convert(Person person, Integer areaId) {

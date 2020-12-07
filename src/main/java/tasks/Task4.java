@@ -19,7 +19,11 @@ public class Task4 implements Task {
 
   // !!! Редактируйте этот метод !!!
   private List<ApiPersonDto> convert(List<Person> persons) {
-    return new ArrayList<>();
+    List<ApiPersonDto> personList = new ArrayList<>();
+    for(Person p : persons){
+      personList.add(convert(p));
+    }
+    return personList;
   }
 
   private static ApiPersonDto convert(Person person) {

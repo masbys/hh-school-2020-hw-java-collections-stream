@@ -3,10 +3,9 @@ package tasks;
 import common.Company;
 import common.Task;
 import common.Vacancy;
+import one.util.streamex.StreamEx;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /*
 Из коллекции компаний необходимо получить всевозможные различные названия вакансий
@@ -14,7 +13,16 @@ import java.util.Set;
 public class Task7 implements Task {
 
   private Set<String> vacancyNames(Collection<Company> companies) {
-    return new HashSet<>();
+    List<Vacancy> vacancies = new ArrayList<>();
+    for (Company c:companies){
+      vacancies.addAll(c.getVacancies());
+    }
+    Set<String> stringSet = new HashSet<>();
+
+    for (Vacancy s : vacancies){
+      stringSet.add(s.getTitle());
+    }
+    return stringSet;
   }
 
   @Override
