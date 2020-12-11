@@ -6,6 +6,11 @@ import common.Task;
 
 import java.time.Instant;
 import java.util.*;
+import java.util.function.Function;
+
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
 
 /*
 Имеются
@@ -20,13 +25,16 @@ public class Task6 implements Task {
                                               Map<Integer, Set<Integer>> personAreaIds,
                                               Collection<Area> areas) {
 
-        Map<Integer, Area> areaMap = new HashMap<>();
-        for (Area area : areas) {
-            areaMap.put(area.getId(), area);
-        }
+        Map<Integer, Area> areaMap = areas.stream()
+                .collect(toMap(Area::getId, identity()));
 
         Set<String> personAreaSet = new HashSet<>();
 
+//        с помощью flatMap нет возможности просто передать person
+//        persons.stream()
+//                .map(person -> personAreaIds.get(person.getId()))
+//                .flatMap(Collection::stream)
+//                .map(areaMap::get);
         for (Person person : persons) {
             Integer personId = person.getId();
             for (Integer areaId : personAreaIds.get(personId)) {
