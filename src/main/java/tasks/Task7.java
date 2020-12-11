@@ -6,22 +6,19 @@ import common.Vacancy;
 
 import java.util.*;
 
+import static java.util.stream.Collectors.toSet;
+
 /*
 Из коллекции компаний необходимо получить всевозможные различные названия вакансий
  */
 public class Task7 implements Task {
 
     private Set<String> vacancyNames(Collection<Company> companies) {
-        List<Vacancy> vacancies = new ArrayList<>();
-        for (Company c:companies){
-            vacancies.addAll(c.getVacancies());
-        }
-        Set<String> stringSet = new HashSet<>();
-
-        for (Vacancy s : vacancies){
-            stringSet.add(s.getTitle());
-        }
-        return stringSet;
+        return companies.stream()
+                .map(Company::getVacancies)
+                .flatMap(Collection::stream)
+                .map(Vacancy::getTitle)
+                .collect(toSet());
     }
 
     @Override
