@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.stream.Collectors.toList;
+
 /*
 Задача 5
 Расширим предыдущую задачу
@@ -22,16 +24,9 @@ public class Task5 implements Task {
     // !!! Редактируйте этот метод !!!
     private List<ApiPersonDto> convert(List<Person> persons, Map<Integer, Integer> personAreaIds) {
 
-        Map<Integer, Person> personMap = new HashMap<>();
-        for (Person p : persons) {
-            personMap.put(p.getId(), p);
-        }
-
-        List<ApiPersonDto> personList = new ArrayList<>();
-        for (Integer id : personMap.keySet()) {
-            personList.add(convert(personMap.get(id), personAreaIds.get(id)));
-        }
-        return personList;
+        return persons.stream()
+                .map(person -> convert(person, personAreaIds.get(person.getId())))
+                .collect(toList());
     }
 
     private static ApiPersonDto convert(Person person, Integer areaId) {
