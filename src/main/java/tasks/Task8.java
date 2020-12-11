@@ -6,8 +6,8 @@ import common.Task;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
+import static java.util.Collections.disjoint;
+import static java.util.stream.Collectors.*;
 
 /*
 А теперь о горьком
@@ -22,11 +22,7 @@ public class Task8 implements Task {
 
 
     //Не хотим выдывать апи нашу фальшивую персону, поэтому конвертим начиная со второй
-    //оставляем проверку, т.к. skip для пусого листа - NullPointerException
     public List<String> getNames(List<Person> persons) {
-        if (persons.size() == 0) {
-            return Collections.emptyList();
-        }
         return persons.stream().skip(1).map(Person::getFirstName).collect(toList());
     }
 
@@ -46,26 +42,14 @@ public class Task8 implements Task {
 
     // словарь id персоны -> ее имя
     public Map<Integer, String> getPersonNames(Collection<Person> persons) {
-
-        Map<Integer, String> map = new HashMap<>();
-        for (Person person : persons) {
-            Integer personId = person.getId();
-            if (!map.containsKey(personId)) {
-                map.put(personId, convertPersonToString(person));
-            }
-        }
-        return map;
+        return persons.stream()
+                .collect(toMap(Person::getId, this::convertPersonToString, (person1,person2)->person1));
     }
 
     // есть ли совпадающие в двух коллекциях персоны?
     //получаем линейную сложность
     public boolean hasSamePersons(Collection<Person> persons1, Collection<Person> persons2) {
-        Set<Person> person1Set = new HashSet<>(persons1);
-        Set<Person> person2Set = new HashSet<>(persons2);
-        Set<Person> allPersonSet = new HashSet<>();
-        allPersonSet.addAll(person1Set);
-        allPersonSet.addAll(person2Set);
-        return allPersonSet.size() < person1Set.size() + person2Set.size();
+        return !disjoint(persons1,persons2);
     }
 
     //...
